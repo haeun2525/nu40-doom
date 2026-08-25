@@ -1,0 +1,22 @@
+# 남의 저장소. setup.sh 가 알아서 받아온다.
+host/doomgeneric/
+
+# id Software 의 셰어웨어 WAD. 저장소에 넣지 않는다. setup.sh 안내대로 받을 것.
+host/doom1.wad
+
+# 빌드 결과물
+tools/sim/sim
+tools/sim/faces
+*.o
+*.dSYM/
+
+# 시뮬레이터가 만들어내는 것들 (tools/sim/sim 으로 언제든 다시 뽑는다)
+*.bin
+tools/sim/preview.html
+tools/sim/doom_preview.html
+tools/sim/sheet.png
+tools/sim/look.png
+tools/sim/walk.png
+
+# 편집기
+.DS_Store
