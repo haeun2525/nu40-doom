@@ -1,4 +1,4 @@
-// 자동 생성됨 — tools/make_assets.py 를 고치고 다시 돌릴 것. 직접 수정 금지.
+// Auto-generated - edit tools/make_assets.py and re-run it. Do not edit by hand.
 #ifndef ASSETS_H
 #define ASSETS_H
 #include <stdint.h>

@@ -70,7 +70,7 @@ static int open_serial(const char* want) {
   } else {
     glob_t g;
     if (glob("/dev/cu.usbmodem*", 0, NULL, &g) != 0 || g.gl_pathc == 0) {
-      fprintf(stderr, "보드를 찾지 못했습니다. /dev/cu.usbmodem* 가 없습니다.\n");
+      fprintf(stderr, "Board not found. No /dev/cu.usbmodem* device.\n");
       return -1;
     }
     snprintf(path, sizeof(path), "%s", g.gl_pathv[0]);
@@ -87,7 +87,7 @@ static int open_serial(const char* want) {
   t.c_cflag |= CLOCAL | CREAD;
   t.c_cc[VMIN] = 0; t.c_cc[VTIME] = 0;
   tcsetattr(fd, TCSANOW, &t);
-  fprintf(stderr, "보드 연결: %s\n", path);
+  fprintf(stderr, "Board connected: %s\n", path);
   return fd;
 }
 
@@ -210,7 +210,7 @@ static void drain_input(void) {
     int mask = buf[i+1] | (buf[i+2] << 8);
     int diff = mask ^ prev_mask;
     // 메뉴·타이틀 화면에서는 버튼 뜻을 바꾼다.
-    // 조합키(2+4)는 방향키가 같이 나가서 커서가 움직여버린다. 발사 버튼 하나로 선택하게 한다.
+    // 2+4 같은 조합키로 선택하면 방향키가 같이 나가서 커서가 움직여버린다. 발사 버튼(4) 하나로 선택하게 한다.
     int menu = g_menu_active();
 
     // ── 조합키는 1+3 하나뿐이다. 누르고 있던 시간으로 세 갈래로 나눈다.
@@ -229,10 +229,10 @@ static void drain_input(void) {
           kq_push(1, KEY_ESCAPE);
           kq_push(0, KEY_ESCAPE);
         } else if (held < 2500) {
-          fprintf(stderr, "리셋: 타이틀 화면으로\n"); fflush(stderr);
+          fprintf(stderr, "Reset: back to title screen\n"); fflush(stderr);
           g_start_title();
         } else {
-          fprintf(stderr, "바로 시작: E1M1 어려운 모드\n"); fflush(stderr);
+          fprintf(stderr, "Quick start: E1M1, hard mode\n"); fflush(stderr);
           g_start_e1m1();
         }
       }
@@ -266,7 +266,7 @@ void DG_DrawFrame(void) {
     uint32_t now = DG_GetTicksMs();
     if (fps_t0 == 0) fps_t0 = now;
     if (now - fps_t0 >= 1000) {
-      fprintf(stderr, "FPS %u  (보드 응답 없음 %u회)\n", fps_n, timeouts);
+      fprintf(stderr, "FPS %u  (board timeouts: %u)\n", fps_n, timeouts);
       fflush(stderr);
       fps_n = 0; timeouts = 0; fps_t0 = now;
     }

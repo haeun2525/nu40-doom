@@ -236,11 +236,11 @@ FLASH = """\
 def pack2bit(art, w, h):
     """2비트/픽셀, 가로 우선. 한 바이트에 픽셀 4개."""
     rows = art.split("\n")
-    assert len(rows) == h, f"세로 {len(rows)} != {h}"
+    assert len(rows) == h, f"height {len(rows)} != {h}"
     bits = []
     for y in range(h):
         r = rows[y].ljust(w)
-        assert len(r) == w, f"가로 {len(r)} != {w}"
+        assert len(r) == w, f"width {len(r)} != {w}"
         for x in range(w):
             bits.append(LV[r[x]])
     while len(bits) % 4:            # 4의 배수가 아니면 뒤를 0으로 채운다
@@ -263,7 +263,7 @@ grid = bytearray()
 start = None
 enemies = []
 for y, r in enumerate(rows):
-    assert len(r) == MW, f"{y}행 길이 {len(r)}"
+    assert len(r) == MW, f"row {y} length {len(r)}"
     for x, c in enumerate(r):
         if c == 'P':
             start = (x + 0.5, y + 0.5); grid.append(0)
@@ -277,7 +277,7 @@ for y, r in enumerate(rows):
             grid.append(int(c))
 
 out = [
- "// 자동 생성됨 — tools/make_assets.py 를 고치고 다시 돌릴 것. 직접 수정 금지.",
+ "// Auto-generated - edit tools/make_assets.py and re-run it. Do not edit by hand.",
  "#ifndef ASSETS_H", "#define ASSETS_H", "#include <stdint.h>", "",
  f"#define MAP_W {MW}", f"#define MAP_H {MH}",
  f"#define START_X {start[0]:.1f}f", f"#define START_Y {start[1]:.1f}f",
@@ -309,7 +309,7 @@ out.append("};\n#endif")
 dst = os.path.expanduser("~/nu40-doom/firmware/nu40_doom/assets.h")
 open(dst, "w").write("\n".join(out) + "\n")
 print(f"{dst}")
-print(f"맵 {MW}x{MH}, 시작 {start}, 적 {len(enemies)}마리")
-print(f"텍스처 {len(tex_all)}B, 임프 {len(pack2bit(IMP,16,24))}B, "
-      f"권총 {len(pack2bit(PISTOL,26,22))}B, 섬광 {len(pack2bit(FLASH,24,10))}B, "
-      f"맵 {len(grid)}B  → 합계 {len(tex_all)+len(pack2bit(IMP,16,24))+len(pack2bit(PISTOL,26,22))+len(pack2bit(FLASH,24,10))+len(grid)}B")
+print(f"map {MW}x{MH}, start {start}, {len(enemies)} enemies")
+print(f"textures {len(tex_all)}B, imp {len(pack2bit(IMP,16,24))}B, "
+      f"pistol {len(pack2bit(PISTOL,26,22))}B, flash {len(pack2bit(FLASH,24,10))}B, "
+      f"map {len(grid)}B  → total {len(tex_all)+len(pack2bit(IMP,16,24))+len(pack2bit(PISTOL,26,22))+len(pack2bit(FLASH,24,10))+len(grid)}B")

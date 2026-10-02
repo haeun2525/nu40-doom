@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     if (i % every == 0) { fwrite(fb, 1, RC_FB_BYTES, f); saved++; }
   }
   fclose(f);
-  fprintf(stderr, "총 %d프레임 시뮬레이션, %d장 저장 (%s)\n", total, saved, out);
-  fprintf(stderr, "끝난 위치 (%.2f, %.2f) 체력 %d 탄약 %d\n", st.px, st.py, st.health, st.ammo);
+  fprintf(stderr, "Simulated %d frames, saved %d (%s)\n", total, saved, out);
+  fprintf(stderr, "End position (%.2f, %.2f) health %d ammo %d\n", st.px, st.py, st.health, st.ammo);
   return 0;
 }

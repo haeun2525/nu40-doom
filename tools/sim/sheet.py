@@ -49,4 +49,4 @@ for i, fi in enumerate(picks):
         for x in range(PW):
             sheet[(oy+y)*sw+ox+x] = (235,245,255) if get(fr, x//Z, y//Z) else (8,10,14)
 png(out, sheet, sw, sh)
-print(f"{out}  ({n}프레임 중 {picks})")
+print(f"{out}  ({picks} of {n} frames)")

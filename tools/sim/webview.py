@@ -10,7 +10,7 @@ n = len(data) // FB
 # 압축하지 않는다: file:// 로 열어도 DecompressionStream 같은 API에 기대지 않게
 b64 = base64.b64encode(data).decode()
 
-HTML = """<!doctype html><meta charset="utf-8"><title>NU40DK 3D — 미리보기</title>
+HTML = """<!doctype html><meta charset="utf-8"><title>NU40DK 3D — Preview</title>
 <style>
  :root{color-scheme:dark}
  body{margin:0;background:#0b0d10;color:#cfd6e4;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
@@ -26,10 +26,10 @@ HTML = """<!doctype html><meta charset="utf-8"><title>NU40DK 3D — 미리보기
  input[type=range]{width:520px}
  .meta{color:#6d7a8c;font-size:12px;font-variant-numeric:tabular-nums}
 </style>
-<h1>NU40DK 단독 3D 엔진 — 실제 OLED 픽셀 (128 x 64, 1비트)</h1>
+<h1>NU40DK standalone 3D engine — actual OLED pixels (128 x 64, 1-bit)</h1>
 <div class="screen"><canvas id="c" width="128" height="64"></canvas></div>
 <div class="row">
-  <button id="pp">일시정지</button>
+  <button id="pp">Pause</button>
   <input type="range" id="sl" min="0" value="0">
   <span class="meta" id="lbl"></span>
 </div>
@@ -42,7 +42,7 @@ const img=cx.createImageData(W,H);
 let i=0, playing=true;
 document.getElementById("sl").max=NF-1;
 document.getElementById("info").textContent =
-  NF+"프레임 · 30fps 재생 · 프레임 1장 = "+FB+"바이트 · 탭이 뒤에 있으면 브라우저가 재생을 늦춘다";
+  NF+" frames · 30fps playback · 1 frame = "+FB+" bytes · browsers slow playback in background tabs";
 requestAnimationFrame(tick);
 function draw(f){
   const off=f*FB, d=img.data;
@@ -60,12 +60,12 @@ function tick(t){
   requestAnimationFrame(tick);
 }
 document.getElementById("pp").onclick=e=>{
-  playing=!playing; e.target.textContent=playing?"일시정지":"재생";
+  playing=!playing; e.target.textContent=playing?"Pause":"Play";
 };
 document.getElementById("sl").oninput=e=>{
-  playing=false; document.getElementById("pp").textContent="재생";
+  playing=false; document.getElementById("pp").textContent="Play";
   i=+e.target.value; draw(i);
 };
 </script>"""
 open(out, "w").write(HTML.replace("__DATA__", b64).replace("__N__", str(n)))
-print(f"{out}  ({n}프레임, {len(b64)//1024}KB)")
+print(f"{out}  ({n} frames, {len(b64)//1024}KB)")

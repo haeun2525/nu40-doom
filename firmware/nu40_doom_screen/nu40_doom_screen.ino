@@ -97,7 +97,11 @@ static void showHealthOnLeds(int health) {
 
 // 버튼 4개만으로 조작한다 (B안과 같은 배치).
 //   1 좌회전   2 전진(문 자동으로 열림)   3 우회전   4 발사
-//   1+3 = 메뉴(ESC)   2+4 = 확인(ENTER)
+//   1+3 = ESC 조합키. 뗄 때 맥이 누른 시간으로 판정한다:
+//         0.5초 미만 = 메뉴 열기/닫기, 0.5~2.5초 = 타이틀로 리셋, 2.5초 이상 = E1M1 바로 시작
+//   메뉴·타이틀 화면에서는 맥(host/doomgeneric_nu40.c)이 뜻을 바꾼다:
+//         1 = 위, 3 = 아래, 4 = 확인(ENTER, 메뉴가 안 열렸으면 ESC로 메뉴 열기)
+//   ENTER 전용 조합키는 없다. IN_ENTER 비트는 보드에서 보내지 않는다.
 // 조이스틱은 꽂으면 추가로 먹는다.
 static uint16_t readInputMask() {
   uint16_t m = 0;
@@ -146,7 +150,7 @@ void setup() {
     display.display();
     Serial.write((uint8_t)0x4B);          // 첫 프레임을 받을 준비가 됐다
   } else {
-    Serial.println("ERR|OLED를 찾지 못했습니다. SDA=P0.26 / SCL=P0.27 배선을 확인하세요.");
+    Serial.println("ERR|OLED not found. Check wiring: SDA=P0.26 / SCL=P0.27.");
   }
   fpsWindowMs = millis();
   Serial.println("READY");

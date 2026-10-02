@@ -1,5 +1,35 @@
 # NU40DK Doom
 
+## Quick start (English)
+
+Two builds live in this repo:
+
+- **Standalone 3D engine** (`firmware/nu40_doom`): a Doom-style raycaster computed entirely on the NU40DK
+  and drawn on a 128x64 SSD1306 OLED (SDA=P0.26, SCL=P0.27). Buttons: 1 turn left, 2 forward (opens doors),
+  3 turn right, 4 fire, 2+4 run, 1+3 toggle demo mode. The 4 LEDs show health. Serial at boot:
+  `READY|joy connected` or `READY|joy none (running demo mode)`, then `FPS|..|HP|..|AMMO|..` lines.
+- **Real Doom 1 streamed from a Mac** (`firmware/nu40_doom_screen` + `host/`): the Mac runs doomgeneric and
+  sends 1-bit frames; the board draws them and sends button input back. The OLED shows `WAITING FOR DOOM...`
+  until the first frame arrives.
+
+```bash
+CLI="/Applications/Arduino IDE.app/Contents/Resources/app/lib/backend/resources/arduino-cli"
+"$CLI" compile --fqbn nucode:nrf52:nu40dk firmware/nu40_doom          # or firmware/nu40_doom_screen
+"$CLI" upload  --fqbn nucode:nrf52:nu40dk -p /dev/cu.usbmodemXXXX firmware/nu40_doom
+
+# Mac streaming build (needs doom1.wad shareware in host/; setup.sh tells you where to get it)
+cd host && ./setup.sh
+./doomgeneric/doomgeneric/doom_nu40 -iwad doom1.wad    # NU40_PORT=/dev/cu.usbmodemXXXX to pick a port
+```
+
+Streaming controls: 1/3 turn, 2 forward, 4 fire. In menus 1 = up, 3 = down, 4 = select (opens the menu
+from the title screen). Hold 1+3 and release: under 0.5 s = menu (ESC), 0.5-2.5 s = back to title,
+over 2.5 s = jump straight into E1M1 on hard. The Mac prints `Board connected: ...` and an
+`FPS n  (board timeouts: n)` line every second.
+
+---
+
+
 "Doom runs on everything" 밈을 NU40DK 로. 두 갈래가 한 저장소에 같이 있다.
 
 | | 무엇 | 연산 주체 | 쓰임 |

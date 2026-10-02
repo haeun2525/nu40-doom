@@ -128,7 +128,7 @@ void DG_DrawFrame(void) {
   fwrite(fb, 1, FB_BYTES, outfull);
   if (++captured >= want) {
     fclose(out); fclose(outfull);
-    fprintf(stderr, "%d 프레임 기록\n", captured);
+    fprintf(stderr, "%d frames recorded\n", captured);
     exit(0);
   }
 }

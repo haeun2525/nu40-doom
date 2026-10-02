@@ -171,7 +171,7 @@ void setup() {
   displayOk = display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR_MAIN);
   if (!displayOk) displayOk = display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR_ALT);
   if (!displayOk) {
-    Serial.println("ERR|OLED를 찾지 못했습니다. SDA=P0.26 / SCL=P0.27 배선과 3V3·GND를 확인하세요.");
+    Serial.println("ERR|OLED not found. Check wiring: SDA=P0.26 / SCL=P0.27, 3V3 and GND.");
   }
 
   rc_init(&game);
@@ -179,7 +179,7 @@ void setup() {
   lastFrameMs = millis();
   fpsWindowMs = lastFrameMs;
   lastInputMs = lastFrameMs;
-  Serial.print("READY|joy "); Serial.print(joyPresent ? "연결됨" : "없음(데모 모드로 돕니다)");
+  Serial.print("READY|joy "); Serial.print(joyPresent ? "connected" : "none (running demo mode)");
   Serial.print(" center x="); Serial.print(joyCenterX);
   Serial.print(" y="); Serial.println(joyCenterY);
 
